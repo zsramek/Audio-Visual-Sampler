@@ -22,9 +22,7 @@ audioPlayer;
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.pitch = 1.0;
-        self.volume = 0.5;
-        self.duration = 1.0;
+
     }
     return self;
 }
@@ -36,6 +34,9 @@ audioPlayer;
     playButton.enabled = NO;
     pauseButton.enabled = NO;
     
+    self.pitch = 1.0;
+    self.volume = 0.5;
+    self.duration = 1.0;
     
     NSArray *dirPaths;
     NSString *docsDir;
@@ -90,6 +91,12 @@ audioPlayer;
     self.volume = sender.value;
 }
 
+- (IBAction)speedSlider:(UISlider*)sender
+{
+    self.pitch = sender.value;
+    self.duration = (2.0 - sender.value);
+}
+
 - (IBAction)record:(id)sender
 {
     if (!audioRecorder1.recording)
@@ -105,6 +112,7 @@ audioPlayer;
 {
     if (!audioRecorder1.recording)
     {
+        [audioPlayer stop];
         pauseButton.enabled = YES;
         recordButton.enabled = NO;
         

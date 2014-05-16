@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UISlider *pitchSlider;
 @property (weak, nonatomic) IBOutlet UISlider *durationSlider;
 @property (weak, nonatomic) IBOutlet UISlider *volumeSlider;
+@property (weak, nonatomic) IBOutlet UISlider *speedSlider;
 
 @property (strong, nonatomic) AVAudioRecorder *audioRecorder1;
 //@property (strong, nonatomic) AVAudioPlayer *audioPlayer1;
