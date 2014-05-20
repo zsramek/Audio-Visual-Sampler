@@ -18,8 +18,6 @@
 @synthesize videoPlaybackView;
 @synthesize audioPlayer;
 @synthesize volume, duration, pitch;
-//@synthesize error;
-
 
 - (void)viewDidLoad
 {
@@ -34,6 +32,8 @@
     // Dispose of any resources that can be recreated.
 }
 
+//-----------Delegate Functions to get URLs, etc.-------------------------------------------------------------------
+
 - (void) handleURLFromCameraViewController:(NSURL *)URL
 {
     NSLog(@"Camera Delegate Worked");
@@ -45,44 +45,38 @@
 {
     NSLog(@"Sampler Delegate Worked");
     self.audioURL = URL;
-    self.pitch = 2.0 - passedPitch;
-    self.duration = 2.0 - passedDuration;
+    self.pitch = (2.0 - passedPitch);
+    self.duration = (2.0 - passedDuration);
     NSLog(@"pitch: %.1f",pitch);
 }
+
+//------------------------------------------------------------------------------------------------------------------
 
 - (void)displayLatestVideo
 {
     NSLog(@"Displaying Video");
     
-    /*
-    AVPlayer *mainPlayer = [[AVPlayer alloc] init];
-    AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:movieURL];
-    [mainPlayer replaceCurrentItemWithPlayerItem:playerItem];
-    */
-    
+    //Setup AVPlayer
     mainPlayer = [[AVQueuePlayer alloc] init];
     playerItem = [[AVPlayerItem alloc] initWithURL:movieURL];
     [mainPlayer replaceCurrentItemWithPlayerItem:playerItem];
     [mainPlayer setRate:0.5];
-    
     mainPlayer.actionAtItemEnd = AVPlayerActionAtItemEndNone;
     
+    //Setup notification for looping video
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(playerItemDidReachEnd:)
                                                  name:AVPlayerItemDidPlayToEndTimeNotification
                                                object:[mainPlayer currentItem]];
     
+    //Setup GPUImageMovie
     video = [[GPUImageMovie alloc] initWithPlayerItem:playerItem];
     [video addTarget:videoPlaybackView];
     video.playAtActualSpeed = YES;
-    //[video setShouldRepeat:YES];
     [mainPlayer setRate:0.5];
-   // [mainPlayer play];
     [video startProcessing];
     [mainPlayer pause];
-   //[video endProcessing];
-    
-    
+
 }
 
 - (IBAction)stopAll:(id)sender
@@ -138,7 +132,6 @@
     AVPlayerItem *p = [notification object];
     [p seekToTime:kCMTimeZero];
     [mainPlayer setRate:0.5];
-    //[p play];
 }
 
 @end

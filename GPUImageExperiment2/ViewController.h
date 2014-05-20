@@ -34,8 +34,6 @@
 @property(nonatomic) float pitch;
 @property(nonatomic) float volume;
 
-//@property(weak, nonatomic) NSError *error;
-
 - (void)displayLatestVideo;
 
 @end
