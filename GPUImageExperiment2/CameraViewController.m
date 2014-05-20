@@ -16,6 +16,8 @@
 @implementation CameraViewController
 
 @synthesize movieURL;
+@synthesize recordButton, stopRecordButton, backButton;
+@synthesize gpuImageView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -30,19 +32,13 @@
 {
     [super viewDidLoad];
     
-    _stopRecordButton.enabled = NO;
+    stopRecordButton.enabled = NO;
     
     //Setup video camera
-    _gpuImageView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
+    gpuImageView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
     videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraPosition:AVCaptureDevicePositionBack];
     videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
-    [videoCamera addTarget:_gpuImageView];
-    
-    //Setup GPUImageMovieWriter
-   /* pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.m4v"];
-    unlink([pathToMovie UTF8String]);
-    movieURL = [[NSURL alloc] initFileURLWithPath:pathToMovie];
-    movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(640.0, 640.0) fileType:AVFileTypeQuickTimeMovie outputSettings:[self getVideoSettings]];*/
+    [videoCamera addTarget:gpuImageView];
     
     // Begin showing video camera stream
     [videoCamera startCameraCapture];
@@ -58,28 +54,19 @@
     movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(640.0, 640.0) fileType:AVFileTypeQuickTimeMovie outputSettings:[self getVideoSettings]];
     
     
-    _recordButton.enabled = NO;
-    _stopRecordButton.enabled = YES;
+    recordButton.enabled = NO;
+    stopRecordButton.enabled = YES;
     [videoCamera addTarget:movieWriter];
     [movieWriter startRecording];
 }
 - (IBAction)stopRecording:(id)sender
 {
-    _recordButton.enabled = YES;
+    recordButton.enabled = YES;
     [videoCamera removeTarget:movieWriter];
     [movieWriter finishRecording];
     NSLog(@"Recording Finished");
     UISaveVideoAtPathToSavedPhotosAlbum(pathToMovie, nil, nil, NULL);
     
-    // Open Sharing Alert
-   // NSString *alertTitle = @"Recording Complete";
-    //NSString *alertMessage = @"Video Saved To Album";
-    //UIAlertView *alert = [[UIAlertView alloc]   initWithTitle:alertTitle message:alertMessage delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil,nil];
-    
-    //if ([alert isVisible] == NO)
-    //{
-      //  [alert show];
-   // }
     [self.delegate handleURLFromCameraViewController:movieURL];
     [self dismissViewControllerAnimated:YES completion:nil];
 
@@ -150,17 +137,5 @@
     
     return videoSettings;
 }
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
