@@ -237,4 +237,9 @@ audioPlayer;
 }
 */
 
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    [audioPlayer stop];
+}
+
 @end

@@ -25,6 +25,7 @@
 {
     [super viewDidLoad];
     NSLog(@"View did load.");
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -53,22 +54,41 @@
 {
     NSLog(@"Displaying Video");
     
-    //AVPlayer *mainPlayer = [[AVPlayer alloc] init];
-    //AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:movieURL];
-    //[mainPlayer replaceCurrentItemWithPlayerItem:playerItem];
+    /*
+    AVPlayer *mainPlayer = [[AVPlayer alloc] init];
+    AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:movieURL];
+    [mainPlayer replaceCurrentItemWithPlayerItem:playerItem];
+    */
     
-    video = [[GPUImageMovie alloc] initWithURL:movieURL];
+    mainPlayer = [[AVQueuePlayer alloc] init];
+    playerItem = [[AVPlayerItem alloc] initWithURL:movieURL];
+    [mainPlayer replaceCurrentItemWithPlayerItem:playerItem];
+    [mainPlayer setRate:0.5];
+    
+    mainPlayer.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(playerItemDidReachEnd:)
+                                                 name:AVPlayerItemDidPlayToEndTimeNotification
+                                               object:[mainPlayer currentItem]];
+    
+    video = [[GPUImageMovie alloc] initWithPlayerItem:playerItem];
     [video addTarget:videoPlaybackView];
     video.playAtActualSpeed = YES;
-    [video setShouldRepeat:YES];
+    //[video setShouldRepeat:YES];
+    [mainPlayer setRate:0.5];
+   // [mainPlayer play];
     [video startProcessing];
+    [mainPlayer pause];
    //[video endProcessing];
+    
     
 }
 
 - (IBAction)stopAll:(id)sender
 {
     [video endProcessing];
+    [mainPlayer pause];
     [audioPlayer stop];
 }
 
@@ -85,6 +105,7 @@
     [audioPlayer changeDuration:duration];
     [audioPlayer setNumberOfLoops:loops];
     
+    [mainPlayer play];
     [audioPlayer play];
     [video startProcessing];
 }
@@ -107,8 +128,17 @@
     }
     
     
+    [mainPlayer pause];
     [video endProcessing];
     [audioPlayer stop];
+}
+
+- (void)playerItemDidReachEnd:(NSNotification *)notification
+{
+    AVPlayerItem *p = [notification object];
+    [p seekToTime:kCMTimeZero];
+    [mainPlayer setRate:0.5];
+    //[p play];
 }
 
 @end

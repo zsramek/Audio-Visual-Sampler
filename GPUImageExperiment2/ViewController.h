@@ -18,6 +18,9 @@
 {
     GPUImageMovie *video;
     NSInteger loops;
+    
+    AVPlayer *mainPlayer;
+    AVPlayerItem *playerItem;
    
 }
 
