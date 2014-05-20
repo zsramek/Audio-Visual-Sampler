@@ -39,10 +39,10 @@
     [videoCamera addTarget:_gpuImageView];
     
     //Setup GPUImageMovieWriter
-    pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.m4v"];
+   /* pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.m4v"];
     unlink([pathToMovie UTF8String]);
     movieURL = [[NSURL alloc] initFileURLWithPath:pathToMovie];
-    movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(640.0, 640.0) fileType:AVFileTypeQuickTimeMovie outputSettings:[self getVideoSettings]];
+    movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(640.0, 640.0) fileType:AVFileTypeQuickTimeMovie outputSettings:[self getVideoSettings]];*/
     
     // Begin showing video camera stream
     [videoCamera startCameraCapture];
@@ -51,6 +51,13 @@
 
 - (IBAction)startRecording:(id)sender
 {
+    //Setup GPUImageMovieWriter
+    pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.m4v"];
+    unlink([pathToMovie UTF8String]);
+    movieURL = [[NSURL alloc] initFileURLWithPath:pathToMovie];
+    movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(640.0, 640.0) fileType:AVFileTypeQuickTimeMovie outputSettings:[self getVideoSettings]];
+    
+    
     _recordButton.enabled = NO;
     _stopRecordButton.enabled = YES;
     [videoCamera addTarget:movieWriter];

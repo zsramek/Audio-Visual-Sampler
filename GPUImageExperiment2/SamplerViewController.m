@@ -7,8 +7,10 @@
 //
 
 #import "SamplerViewController.h"
+#import "ViewController.h"
 
 @class DiracAudioPlayer;
+@class ViewController;
 
 @implementation SamplerViewController
 
@@ -17,6 +19,7 @@
 audioPlayer;
 @synthesize pitchLabel, durationLabel, pitchSlider, durationSlider;
 @synthesize pitch, duration, volume;
+@synthesize soundFileURL1;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,26 +34,26 @@ audioPlayer;
 {
     [super viewDidLoad];
     
-    playButton.enabled = NO;
+    playButton.enabled = YES;
     pauseButton.enabled = NO;
     
     self.pitch = 1.0;
     self.volume = 0.5;
     self.duration = 1.0;
     
-    NSArray *dirPaths;
-    NSString *docsDir;
     
     dirPaths = NSSearchPathForDirectoriesInDomains(
                                                    NSDocumentDirectory, NSUserDomainMask, YES);
     docsDir = dirPaths[0];
 
-    NSString *soundFilePath1 = [docsDir
-                                stringByAppendingPathComponent:@"sound1.caf"];
+    soundFilePath1 = [docsDir stringByAppendingPathComponent:@"sound1.caf"];
 
-    NSURL *soundFileURL1 = [NSURL fileURLWithPath:soundFilePath1];
+    if(soundFileURL1 == nil)
+    {
+        soundFileURL1 = [NSURL fileURLWithPath:soundFilePath1];
+    }
     
-    NSDictionary *recordSettings = [NSDictionary
+    recordSettings = [NSDictionary
                                     dictionaryWithObjectsAndKeys:
                                     [NSNumber numberWithInt:AVAudioQualityMin],
                                     AVEncoderAudioQualityKey,
@@ -68,37 +71,81 @@ audioPlayer;
     [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord
                         error:nil];
     
+    
     audioRecorder1 = [[AVAudioRecorder alloc]
                        initWithURL:soundFileURL1
                        settings:recordSettings
                        error:&error];
+     
 }
 
 - (IBAction)pitchSlider:(UISlider*)sender
 {
     self.pitch = sender.value;
     [pitchLabel setText:[NSString stringWithFormat:@"%.1f",sender.value]];
+    [audioPlayer changePitch:pitch];
 }
 
 - (IBAction)durationSlider:(UISlider*)sender
 {
     self.duration = sender.value;
     [durationLabel setText:[NSString stringWithFormat:@"%.1f",sender.value]];
+    [audioPlayer changeDuration:duration];
 }
 
 - (IBAction)volumeSlider:(UISlider*)sender
 {
     self.volume = sender.value;
+    [audioPlayer setVolume:volume];
 }
 
 - (IBAction)speedSlider:(UISlider*)sender
 {
     self.pitch = sender.value;
     self.duration = (2.0 - sender.value);
+    [audioPlayer changePitch:pitch];
+    [audioPlayer changeDuration:duration];
 }
 
 - (IBAction)record:(id)sender
 {
+/*    NSError *error1 = [[NSError alloc]init];
+    
+    
+    dirPaths = NSSearchPathForDirectoriesInDomains(
+                                                   NSDocumentDirectory, NSUserDomainMask, YES);
+    docsDir = dirPaths[0];
+    
+    soundFilePath1 = [docsDir stringByAppendingPathComponent:@"sound1.caf"];
+    
+    soundFileURL1 = [NSURL fileURLWithPath:soundFilePath1];
+    
+    recordSettings = [NSDictionary
+                      dictionaryWithObjectsAndKeys:
+                      [NSNumber numberWithInt:AVAudioQualityMin],
+                      AVEncoderAudioQualityKey,
+                      [NSNumber numberWithInt:16],
+                      AVEncoderBitRateKey,
+                      [NSNumber numberWithInt: 2],
+                      AVNumberOfChannelsKey,
+                      [NSNumber numberWithFloat:44100.0],
+                      AVSampleRateKey,
+                      nil];
+    
+    //NSError *error = nil;
+    
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord
+                        error:nil];
+
+    //soundFileURL1 = [NSURL fileURLWithPath:soundFilePath1];
+    //soundFileURL1 = [[NSURL alloc]initFileURLWithPath:soundFilePath1];
+    audioRecorder1 = [[AVAudioRecorder alloc]
+                      initWithURL:soundFileURL1
+                      settings:recordSettings
+                      error:&(error1)];
+*/
+    
     if (!audioRecorder1.recording)
     {
         recordButton.enabled = NO;
@@ -168,6 +215,8 @@ audioPlayer;
 
 - (IBAction)done:(id)sender
 {
+    [self.delegate handleURLFromSamplerViewController:audioRecorder1.url:pitch:duration];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

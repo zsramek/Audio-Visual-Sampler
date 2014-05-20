@@ -143,6 +143,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <view contentMode="scaleAspectFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qbU-Nf-F5G" customClass="GPUImageView">
+                                <rect key="frame" x="0.0" y="-119" width="320" height="693"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.79149254869998598" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VxR-ye-0Yd">
                                 <rect key="frame" x="0.0" y="436" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -168,16 +173,11 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="UvF-jb-WZG"/>
                                     <barButtonItem title="Sampler" id="OeT-oZ-JFd">
                                         <connections>
-                                            <segue destination="vfz-tD-B0X" kind="modal" id="4D3-i7-FIf"/>
+                                            <segue destination="vfz-tD-B0X" kind="modal" identifier="sampler" id="4D3-i7-FIf"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <view contentMode="scaleAspectFit" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qbU-Nf-F5G" customClass="GPUImageView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="435"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.79149254869998598" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.7875356921366462" blue="0.02963650044704802" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -188,7 +188,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="728" y="115"/>
+            <point key="canvasLocation" x="728" y="114"/>
         </scene>
         <!--Camera View Controller - Video Camera-->
         <scene sceneID="964-Xc-4so">
@@ -203,7 +203,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NTL-bx-yvi">
-                                <rect key="frame" x="0.0" y="435" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="436" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="nYL-X4-cYT"/>
@@ -229,7 +229,7 @@
                                 </items>
                             </toolbar>
                             <view contentMode="scaleAspectFit" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dbv-m0-Mau" customClass="GPUImageView">
-                                <rect key="frame" x="0.0" y="63" width="320" height="372"/>
+                                <rect key="frame" x="0.0" y="63" width="320" height="378"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="0.78494088451615773" blue="0.068118947559936527" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>

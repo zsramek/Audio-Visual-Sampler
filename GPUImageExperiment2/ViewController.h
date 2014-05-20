@@ -11,15 +11,27 @@
 #import "AVFoundation/AVFoundation.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "CameraViewController.h"
+#import "SamplerViewController.h"
 #import "DiracAudioPlayer.h"
 
-@interface ViewController : UIViewController <CameraViewControllerDelegate>
+@interface ViewController : UIViewController <CameraViewControllerDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate>
 {
     GPUImageMovie *video;
+    NSInteger loops;
+   
 }
 
 @property (weak, nonatomic) IBOutlet GPUImageView *videoPlaybackView;
 @property (nonatomic) NSURL *movieURL;
+@property(nonatomic) NSURL *audioURL;
+
+@property (strong, nonatomic) DiracAudioPlayer *audioPlayer;
+
+@property(nonatomic) float duration;
+@property(nonatomic) float pitch;
+@property(nonatomic) float volume;
+
+//@property(weak, nonatomic) NSError *error;
 
 - (void)displayLatestVideo;
 

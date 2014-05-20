@@ -14,8 +14,12 @@
 
 @implementation ViewController
 
-@synthesize movieURL;
+@synthesize movieURL, audioURL;
 @synthesize videoPlaybackView;
+@synthesize audioPlayer;
+@synthesize volume, duration, pitch;
+//@synthesize error;
+
 
 - (void)viewDidLoad
 {
@@ -31,9 +35,18 @@
 
 - (void) handleURLFromCameraViewController:(NSURL *)URL
 {
-    NSLog(@"Delegate Worked");
+    NSLog(@"Camera Delegate Worked");
     self.movieURL = URL;
     [self displayLatestVideo];
+}
+
+- (void) handleURLFromSamplerViewController:(NSURL *)URL: (float)passedDuration: (float)passedPitch;
+{
+    NSLog(@"Sampler Delegate Worked");
+    self.audioURL = URL;
+    self.pitch = passedPitch;
+    self.duration = passedDuration;
+    NSLog(@"pitch: %.1f",pitch);
 }
 
 - (void)displayLatestVideo
@@ -49,18 +62,30 @@
     video.playAtActualSpeed = YES;
     [video setShouldRepeat:YES];
     [video startProcessing];
-    //[self displayLatestVideo];
-    //[video endProcessing];
+   //[video endProcessing];
     
 }
 
 - (IBAction)stopAll:(id)sender
 {
     [video endProcessing];
+    [audioPlayer stop];
 }
 
 - (IBAction)playAll:(id)sender
 {
+    loops = -1.0;
+    
+    NSError *error = [[NSError alloc]init];
+    
+    audioPlayer = [[DiracAudioPlayer alloc] initWithContentsOfURL:audioURL channels:1 error:&(error)];
+    
+    [audioPlayer changePitch:pitch];
+    //[audioPlayer setVolume:volume];
+    [audioPlayer changeDuration:duration];
+    [audioPlayer setNumberOfLoops:loops];
+    
+    [audioPlayer play];
     [video startProcessing];
 }
 
@@ -73,7 +98,17 @@
         b.delegate = self;
     }
     
+    if ([segue.identifier isEqualToString:@"sampler"])
+    {
+        SamplerViewController *c = (SamplerViewController *) segue.destinationViewController;
+        c.delegate = self;
+        
+        c.soundFileURL1 = self.audioURL;
+    }
+    
+    
     [video endProcessing];
+    [audioPlayer stop];
 }
 
 @end
