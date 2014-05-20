@@ -18,6 +18,7 @@
 @synthesize videoPlaybackView;
 @synthesize audioPlayer;
 @synthesize volume, duration, pitch;
+@synthesize videoRateSlider;
 
 - (void)viewDidLoad
 {
@@ -52,6 +53,13 @@
 
 //------------------------------------------------------------------------------------------------------------------
 
+
+- (IBAction)videoRateSlider:(UISlider*)sender
+{
+    rate = sender.value;
+    [mainPlayer setRate:rate];
+}
+
 - (void)displayLatestVideo
 {
     NSLog(@"Displaying Video");
@@ -60,7 +68,8 @@
     mainPlayer = [[AVQueuePlayer alloc] init];
     playerItem = [[AVPlayerItem alloc] initWithURL:movieURL];
     [mainPlayer replaceCurrentItemWithPlayerItem:playerItem];
-    [mainPlayer setRate:0.5];
+    [mainPlayer setRate:rate];
+    
     mainPlayer.actionAtItemEnd = AVPlayerActionAtItemEndNone;
     
     //Setup notification for looping video
@@ -73,7 +82,7 @@
     video = [[GPUImageMovie alloc] initWithPlayerItem:playerItem];
     [video addTarget:videoPlaybackView];
     video.playAtActualSpeed = YES;
-    [mainPlayer setRate:0.5];
+    [mainPlayer setRate:rate];
     [video startProcessing];
     [mainPlayer pause];
 
@@ -131,7 +140,7 @@
 {
     AVPlayerItem *p = [notification object];
     [p seekToTime:kCMTimeZero];
-    [mainPlayer setRate:0.5];
+    [mainPlayer setRate:rate];
 }
 
 @end

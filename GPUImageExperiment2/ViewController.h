@@ -21,7 +21,8 @@
     
     AVPlayer *mainPlayer;
     AVPlayerItem *playerItem;
-   
+    
+    float rate;
 }
 
 @property (weak, nonatomic) IBOutlet GPUImageView *videoPlaybackView;
@@ -33,6 +34,8 @@
 @property(nonatomic) float duration;
 @property(nonatomic) float pitch;
 @property(nonatomic) float volume;
+
+@property (weak, nonatomic) IBOutlet UISlider *videoRateSlider;
 
 - (void)displayLatestVideo;
 
