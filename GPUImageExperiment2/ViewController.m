@@ -44,8 +44,8 @@
 {
     NSLog(@"Sampler Delegate Worked");
     self.audioURL = URL;
-    self.pitch = passedPitch;
-    self.duration = passedDuration;
+    self.pitch = 2.0 - passedPitch;
+    self.duration = 2.0 - passedDuration;
     NSLog(@"pitch: %.1f",pitch);
 }
 
