@@ -43,7 +43,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *durationLabel;
 
 @property (strong, nonatomic) AVAudioRecorder *audioRecorder1;
-//@property (strong, nonatomic) AVAudioPlayer *audioPlayer1;
 @property (strong, nonatomic) DiracAudioPlayer *audioPlayer;
 
 @property(nonatomic) float duration;
