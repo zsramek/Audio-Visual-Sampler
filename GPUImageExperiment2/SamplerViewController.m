@@ -167,6 +167,7 @@
 
 - (IBAction)done:(id)sender
 {
+    [audioPlayer stop];
     [self.delegate handleURLFromSamplerViewController:audioRecorder1.url:pitch:duration];
     [self dismissViewControllerAnimated:YES completion:nil];
 }

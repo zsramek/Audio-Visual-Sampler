@@ -24,7 +24,6 @@
 {
     [super viewDidLoad];
     NSLog(@"View did load.");
-    
 }
 
 - (void)didReceiveMemoryWarning
@@ -46,9 +45,10 @@
 {
     NSLog(@"Sampler Delegate Worked");
     self.audioURL = URL;
-    self.pitch = (2.0 - passedPitch);
-    self.duration = (2.0 - passedDuration);
+    self.pitch = 2.0 - passedPitch;
+    self.duration = 2.0 - passedDuration;
     NSLog(@"pitch: %.1f",pitch);
+
 }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -97,6 +97,7 @@
 
 - (IBAction)playAll:(id)sender
 {
+    [audioPlayer stop];
     loops = -1.0;
     
     NSError *error = [[NSError alloc]init];
